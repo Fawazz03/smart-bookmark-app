@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Bookmark Manager",
-  description: "Save and manage your bookmarks",
+  description: "Save and manage your favorite links",
 };
 
 export default function RootLayout({

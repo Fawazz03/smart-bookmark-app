@@ -40,7 +40,9 @@ export default function BookmarkList({
           if (payload.eventType === "INSERT") {
             setBookmarks((prev) => [payload.new as Bookmark, ...prev]);
           } else if (payload.eventType === "DELETE") {
-            setBookmarks((prev) => prev.filter((b) => b.id !== payload.old.id));
+            setBookmarks((prev) =>
+              prev.filter((b) => b.id !== payload.old.id)
+            );
           }
         }
       )
@@ -73,8 +75,8 @@ export default function BookmarkList({
       url: normalizedUrl,
       user_id: userId,
     });
-
     setLoading(false);
+
     if (insertError) {
       setError(insertError.message);
     } else {
@@ -97,7 +99,7 @@ export default function BookmarkList({
 
   return (
     <div>
-      {/* Add form */}
+      {/* Add Bookmark Form */}
       <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">Add Bookmark</h2>
         <form onSubmit={handleAdd} className="flex flex-col sm:flex-row gap-3">
@@ -128,59 +130,71 @@ export default function BookmarkList({
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
       </div>
 
-      {/* Bookmark list */}
-      <div>
-        {bookmarks.length === 0 ? (
-          <div className="text-center py-16 text-gray-400">
-            <span className="text-5xl block mb-4">🔖</span>
-            <p className="text-lg">No bookmarks yet. Add your first one above!</p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <p className="text-sm text-gray-500 mb-2">{bookmarks.length} bookmark{bookmarks.length !== 1 ? "s" : ""}</p>
-            {bookmarks.map((bookmark) => (
-              <div
-                key={bookmark.id}
-                className="bg-white rounded-xl shadow-sm p-4 flex items-center gap-4 group hover:shadow-md transition-shadow"
-              >
-                <img
-                  src={`https://www.google.com/s2/favicons?domain=${getDomain(bookmark.url)}&sz=32`}
-                  alt=""
-                  className="w-6 h-6 rounded flex-shrink-0"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-                <div className="flex-1 min-w-0">
-                  <a
-                    href={bookmark.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium text-gray-800 hover:text-blue-600 transition-colors block truncate"
-                  >
-                    {bookmark.title}
-                  </a>
-                  <span className="text-xs text-gray-400 truncate block">{getDomain(bookmark.url)}</span>
-                </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="text-xs text-gray-300 hidden sm:block">
-                    {new Date(bookmark.created_at).toLocaleDateString()}
-                  </span>
-                  <button
-                    onClick={() => handleDelete(bookmark.id)}
-                    className="text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
-                    title="Delete bookmark"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
-                </div>
+      {/* Bookmark List */}
+      {bookmarks.length === 0 ? (
+        <div className="text-center py-16 text-gray-400">
+          <span className="text-5xl block mb-4">🔖</span>
+          <p className="text-lg">No bookmarks yet. Add your first one above!</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          <p className="text-sm text-gray-500">
+            {bookmarks.length} bookmark{bookmarks.length !== 1 ? "s" : ""}
+          </p>
+          {bookmarks.map((bookmark) => (
+            <div
+              key={bookmark.id}
+              className="bg-white rounded-xl shadow-sm p-4 flex items-center gap-4 group hover:shadow-md transition-shadow"
+            >
+              <img
+                src={`https://www.google.com/s2/favicons?domain=${getDomain(bookmark.url)}&sz=32`}
+                alt=""
+                className="w-6 h-6 rounded flex-shrink-0"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = "none";
+                }}
+              />
+              <div className="flex-1 min-w-0">
+                <a
+                  href={bookmark.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-gray-800 hover:text-blue-600 transition-colors block truncate"
+                >
+                  {bookmark.title}
+                </a>
+                <span className="text-xs text-gray-400 truncate block">
+                  {getDomain(bookmark.url)}
+                </span>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <span className="text-xs text-gray-300 hidden sm:block">
+                  {new Date(bookmark.created_at).toLocaleDateString()}
+                </span>
+                <button
+                  onClick={() => handleDelete(bookmark.id)}
+                  className="text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                  title="Delete bookmark"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
